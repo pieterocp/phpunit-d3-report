@@ -37,9 +37,9 @@ document.getElementById("report_form").addEventListener("submit", function(e) {
 function displaySlowestTests(data) {
     var slowestTests = data.slice().sort(function(a, b) {
         return b.time - a.time;
-    }).slice(0, 5);
+    }).slice(0, 10);
 
-    var html = "<h3>Top 5 Slowest Tests</h3>";
+    var html = "<h3>Top 10 Slowest Tests</h3>";
     html += "<table class='table table-striped'>";
     html += "<thead><tr><th>Time</th><th>Test</th></tr></thead>";
     html += "<tbody>";
