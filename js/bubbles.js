@@ -1,9 +1,13 @@
 // Compatibility tweaks
 window.URL = window.URL || window.webkitURL;
 
+var THEME_STORAGE_KEY = "phpunit-d3-report-theme";
+
 // Global variables
 var chart = d3.chart.phpunitBubbles().padding(2);
 var jsonReport = null;
+
+initTheme();
 
 // Load Symfony2 test suite sample
 d3.json("reports/symfony2.json", function(err, data) {
@@ -87,3 +91,48 @@ document.getElementById("json_report_download_link").addEventListener("click", f
     this.href = url;
     this.download = 'phpunit-d3-report.json';
 });
+
+function initTheme() {
+    var toggleButton = document.getElementById("theme-toggle");
+    var initialTheme = getInitialTheme();
+
+    applyTheme(initialTheme);
+
+    toggleButton.addEventListener("click", function() {
+        var nextTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+        applyTheme(nextTheme);
+
+        try {
+            localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        } catch (e) {
+            // Ignore localStorage failures in restricted environments.
+        }
+    });
+}
+
+function getInitialTheme() {
+    try {
+        var savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+        if (savedTheme === "light" || savedTheme === "dark") {
+            return savedTheme;
+        }
+    } catch (e) {
+        // Continue with system preference fallback.
+    }
+
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+    }
+
+    return "light";
+}
+
+function applyTheme(theme) {
+    var toggleButton = document.getElementById("theme-toggle");
+    var isDark = theme === "dark";
+
+    document.body.classList.toggle("dark-mode", isDark);
+    toggleButton.innerText = isDark ? "Light mode" : "Dark mode";
+    toggleButton.setAttribute("aria-pressed", isDark ? "true" : "false");
+}
+
