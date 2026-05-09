@@ -7,6 +7,10 @@
         </tr>
 </table>
 
+> [!WARNING]
+> Forked from an Archived Repository (https://github.com/marmelab/phpunit-d3-report), only minimally updated + heavily vibe coded on top of.
+
+
 # PHPUnit d3 report
 
 This visualization tool provides a quick way to monitor your PHPUnit test suites. With a single glance, you will be able to identify the slowest tests, helping you to improve the overall execution time of your tests.
